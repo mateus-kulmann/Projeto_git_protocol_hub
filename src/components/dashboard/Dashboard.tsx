@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Grid3X3, List, FileText, Clock, User, CheckCircle } from 'lucide-react';
+import { Plus, Grid3x3 as Grid3X3, List, FileText, Clock, User, CheckCircle } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { toast } from 'react-hot-toast';
