@@ -5,7 +5,6 @@ import { useAuth } from '../../contexts/AuthContext';
 import { toast } from 'react-hot-toast';
 import ProtocolCard from '../protocol/ProtocolCard';
 import ProtocolListItem from '../protocol/ProtocolListItem';
-import ProtocolDetails from '../protocol/ProtocolDetails';
 import CreateProtocolModal from '../protocol/CreateProtocolModal';
 import ProtocolFilters from './ProtocolFilters';
 import { apiService } from '../../services/api';
@@ -21,7 +20,6 @@ const Dashboard: React.FC = () => {
   const { logout } = useAuth();
   const { user } = useAuth();
   const [protocols, setProtocols] = useState<any[]>([]);
-  const [selectedProtocol, setSelectedProtocol] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState<any>({});
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -158,16 +156,6 @@ const Dashboard: React.FC = () => {
   };
 
   const tabCounts = getTabCounts();
-
-  const handleProtocolSelect = (protocolId: string) => {
-    setSelectedProtocol(protocolId);
-    joinProtocol(protocolId);
-  };
-
-  const handleCloseProtocol = () => {
-    setSelectedProtocol(null);
-    leaveProtocol();
-  };
 
   const handleCreateProtocol = () => {
     setShowCreateModal(true);
@@ -484,7 +472,6 @@ const Dashboard: React.FC = () => {
                 <ProtocolCard
                   key={protocol.id}
                   protocol={protocol}
-                  onClick={() => handleProtocolSelect(protocol.id)}
                 />
               ))}
             </div>
@@ -519,7 +506,6 @@ const Dashboard: React.FC = () => {
                       <ProtocolListItem
                         key={protocol.id}
                         protocol={protocol}
-                        onClick={() => handleProtocolSelect(protocol.id)}
                       />
                     ))}
                   </tbody>
@@ -621,13 +607,6 @@ const Dashboard: React.FC = () => {
             }
           </p>
         </div>
-      )}
-
-      {selectedProtocol && (
-        <ProtocolDetails
-          protocolId={selectedProtocol}
-          onClose={handleCloseProtocol}
-        />
       )}
 
       <CreateProtocolModal

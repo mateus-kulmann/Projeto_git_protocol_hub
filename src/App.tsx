@@ -17,6 +17,7 @@ import ErrorBoundary from "./components/common/ErrorBoundary";
 import LoginForm from "./components/auth/LoginForm";
 import Dashboard from "./components/dashboard/Dashboard";
 import LandingPage from "./components/landing/LandingPage";
+import ProtocolPage from "./components/protocol/ProtocolPage";
 
 // Solicitar permissão para notificações
 const requestNotificationPermission = async () => {
@@ -81,6 +82,7 @@ const AppContent: React.FC = () => {
                       <Routes>
                         <Route path="/" element={<Dashboard />} />
                         <Route path="/protocols" element={<Dashboard />} />
+                        <Route path="/protocol/:protocolNumber" element={<ProtocolPage />} />
                         <Route path="/chat" element={<Dashboard />} />
                         <Route path="/pending" element={<Dashboard />} />
                         <Route path="/completed" element={<Dashboard />} />

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   Clock, 
   User, 
@@ -36,10 +37,18 @@ interface Protocol {
 
 interface ProtocolCardProps {
   protocol: Protocol;
-  onClick: () => void;
 }
 
-const ProtocolCard: React.FC<ProtocolCardProps> = ({ protocol, onClick }) => {
+const ProtocolCard: React.FC<ProtocolCardProps> = ({ protocol }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    // Convert protocol number to URL-safe format
+    // Remove # and . from protocol number: #20250101.00000001 -> 20250101000000001
+    const urlSafeNumber = protocol.number.replace(/[#.]/g, '');
+    navigate(`/protocol/${urlSafeNumber}`);
+  };
+
   const getChannelIcon = () => {
     if (protocol.chat_active) {
       if (protocol.chat_status === 'active' && protocol.client_online) {
@@ -100,7 +109,7 @@ const ProtocolCard: React.FC<ProtocolCardProps> = ({ protocol, onClick }) => {
   return (
     <div 
       className={`bg-white rounded-lg shadow-md border-l-4 ${getPriorityColor(protocol.priority)} p-6 cursor-pointer hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1`}
-      onClick={onClick}
+      onClick={handleClick}
     >
       <div className="flex justify-between items-start mb-4">
         <div className="flex items-center space-x-2">
