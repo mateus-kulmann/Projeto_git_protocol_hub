@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { 
   FileText, 
-  Users, 
+  Users,
+  Building, 
   BarChart3, 
   Settings,
   MessageSquare,
@@ -20,10 +21,11 @@ const Sidebar: React.FC = () => {
   const menuItems = [
     { icon: Home, label: 'Dashboard', path: '/', badge: null },
     { icon: FileText, label: 'Protocolos', path: '/protocols', badge: '12' },
+    { icon: Users, label: 'Solicitantes', path: '/solicitantes', badge: null },
     { icon: MessageSquare, label: 'Chat Ativo', path: '/chat', badge: '3' },
     { icon: Clock, label: 'Pendentes', path: '/pending', badge: '5' },
     { icon: CheckCircle, label: 'Finalizados', path: '/completed', badge: null },
-    { icon: Users, label: 'Setores', path: '/departments', badge: null },
+    { icon: Building, label: 'Setores', path: '/departments', badge: null },
     { icon: BarChart3, label: 'Relatórios', path: '/reports', badge: null },
     { icon: Settings, label: 'Configurações', path: '/settings', badge: null },
   ];
