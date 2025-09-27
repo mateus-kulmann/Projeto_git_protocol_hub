@@ -1491,6 +1491,158 @@ class ApiService {
     }
   }
 
+  // Solicitantes
+  async getSolicitantes(params: any = {}) {
+    try {
+      let query = supabase
+        .from('solicitantes')
+        .select('*')
+        .eq('ativo', true)
+        .order('created_at', { ascending: false });
+
+      // Apply filters
+      if (params.tipo) {
+        query = query.eq('tipo', params.tipo);
+      }
+      if (params.search) {
+        query = query.or(`nome_completo.ilike.%${params.search}%,razao_social.ilike.%${params.search}%,email.ilike.%${params.search}%,cpf.ilike.%${params.search}%,cnpj.ilike.%${params.search}%`);
+      }
+
+      const { data: solicitantes, error } = await query;
+
+      if (error) throw error;
+
+      return solicitantes || [];
+    } catch (error) {
+      console.error('Error fetching solicitantes:', error);
+      throw error;
+    }
+  }
+
+  async createSolicitante(data: any) {
+    try {
+      // Get current user
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      if (userError || !user) {
+        throw new Error('Usuário não autenticado');
+      }
+      
+      // Get user details from users table to get tenant_id
+      const { data: userData, error: userDataError } = await supabase
+        .from('users')
+        .select('tenant_id')
+        .eq('auth_user_id', user.id)
+        .single();
+
+      if (userDataError || !userData) {
+        throw new Error('Dados do usuário não encontrados');
+      }
+
+      const { data: solicitante, error } = await supabase
+        .from('solicitantes')
+        .insert({
+          tenant_id: userData.tenant_id,
+          tipo: data.tipo,
+          nome_completo: data.nome_completo,
+          razao_social: data.razao_social,
+          cpf: data.cpf,
+          cnpj: data.cnpj,
+          email: data.email,
+          telefone: data.telefone,
+          endereco: data.endereco,
+          pessoa_juridica_id: data.pessoa_juridica_id,
+          ativo: true
+        })
+        .select()
+        .single();
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      return {
+        id: solicitante?.id,
+        message: 'Solicitante criado com sucesso'
+      };
+    } catch (error) {
+      console.error('Error creating solicitante:', error);
+      throw error;
+    }
+  }
+
+  async updateSolicitante(id: string, data: any) {
+    try {
+      const { error } = await supabase
+        .from('solicitantes')
+        .update({
+          tipo: data.tipo,
+          nome_completo: data.nome_completo,
+          razao_social: data.razao_social,
+          cpf: data.cpf,
+          cnpj: data.cnpj,
+          email: data.email,
+          telefone: data.telefone,
+          endereco: data.endereco,
+          pessoa_juridica_id: data.pessoa_juridica_id,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', id);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      return {
+        message: 'Solicitante atualizado com sucesso'
+      };
+    } catch (error) {
+      console.error('Error updating solicitante:', error);
+      throw error;
+    }
+  }
+
+  async deleteSolicitante(id: string) {
+    try {
+      // Soft delete - mark as inactive instead of hard delete
+      const { error } = await supabase
+        .from('solicitantes')
+        .update({ 
+          ativo: false,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', id);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      return {
+        message: 'Solicitante excluído com sucesso'
+      };
+    } catch (error) {
+      console.error('Error deleting solicitante:', error);
+      throw error;
+    }
+  }
+
+  async searchSolicitantes(searchTerm: string) {
+    try {
+      const { data: solicitantes, error } = await supabase
+        .from('solicitantes')
+        .select('*')
+        .eq('ativo', true)
+        .or(`nome_completo.ilike.%${searchTerm}%,razao_social.ilike.%${searchTerm}%,email.ilike.%${searchTerm}%,cpf.ilike.%${searchTerm}%,cnpj.ilike.%${searchTerm}%`)
+        .limit(5);
+
+      if (error) throw error;
+
+      return solicitantes || [];
+    } catch (error) {
+      console.error('Error searching solicitantes:', error);
+      throw error;
+    }
+  }
+
   // Check if current user has specific permission
   async checkUserPermission(permissionCode: string): Promise<boolean> {
     try {
