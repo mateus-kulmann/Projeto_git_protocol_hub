@@ -289,6 +289,7 @@ class ApiService {
           requester_email: data.requester_email,
           requester_phone: data.requester_phone,
           requester_cpf: data.requester_cpf,
+          requester_cnpj: data.requester_cnpj,
           numero: null // Will be set by trigger
         })
         .select()

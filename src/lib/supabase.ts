@@ -241,6 +241,56 @@ export interface Database {
           created_at?: string | null;
         };
       };
+      solicitantes: {
+        Row: {
+          id: string;
+          tenant_id: string | null;
+          tipo: string;
+          nome_completo: string | null;
+          razao_social: string | null;
+          cpf: string | null;
+          cnpj: string | null;
+          email: string | null;
+          telefone: string | null;
+          endereco: string | null;
+          pessoa_juridica_id: string | null;
+          ativo: boolean | null;
+          created_at: string | null;
+          updated_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          tenant_id?: string | null;
+          tipo: string;
+          nome_completo?: string | null;
+          razao_social?: string | null;
+          cpf?: string | null;
+          cnpj?: string | null;
+          email?: string | null;
+          telefone?: string | null;
+          endereco?: string | null;
+          pessoa_juridica_id?: string | null;
+          ativo?: boolean | null;
+          created_at?: string | null;
+          updated_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          tenant_id?: string | null;
+          tipo?: string;
+          nome_completo?: string | null;
+          razao_social?: string | null;
+          cpf?: string | null;
+          cnpj?: string | null;
+          email?: string | null;
+          telefone?: string | null;
+          endereco?: string | null;
+          pessoa_juridica_id?: string | null;
+          ativo?: boolean | null;
+          created_at?: string | null;
+          updated_at?: string | null;
+        };
+      };
     };
   };
 }

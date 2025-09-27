@@ -290,83 +290,66 @@ const CreateProtocolModal: React.FC<CreateProtocolModalProps> = ({
 
             {/* Requester Information */}
             <div className="bg-gray-50 rounded-lg p-4">
-              <h3 className="font-semibold text-[#404040] mb-4">Dados do Solicitante</h3>
+              <h3 className="font-semibold text-[#404040] mb-4">Solicitante</h3>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-[#404040] mb-2">
-                    Nome Completo *
-                  </label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <input
-                      type="text"
-                      {...register('requester_name', { required: 'Nome é obrigatório' })}
-                      className={`w-full pl-11 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#FF6B35] focus:border-transparent ${
-                        errors.requester_name ? 'border-red-500' : 'border-gray-300'
-                      }`}
-                      placeholder="Nome do solicitante"
-                    />
+              <div>
+                <label className="block text-sm font-medium text-[#404040] mb-2">
+                  Selecionar Solicitante *
+                </label>
+                <SolicitanteSelector
+                  value={selectedSolicitante?.id}
+                  onChange={setSelectedSolicitante}
+                  placeholder="Digite para buscar ou criar novo solicitante..."
+                />
+                
+                {/* Show selected solicitante info */}
+                {selectedSolicitante && (
+                  <div className="mt-3 p-3 bg-white rounded border border-gray-200">
+                    <div className="flex items-center space-x-3">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                        selectedSolicitante.tipo === 'pessoa_fisica' 
+                          ? 'bg-blue-100' 
+                          : 'bg-green-100'
+                      }`}>
+                        {selectedSolicitante.tipo === 'pessoa_fisica' ? (
+                          <User className="w-4 h-4 text-blue-600" />
+                        ) : (
+                          <Building className="w-4 h-4 text-green-600" />
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-2">
+                          <span className="text-sm font-medium text-gray-900">
+                            {selectedSolicitante.tipo === 'pessoa_fisica' 
+                              ? selectedSolicitante.nome_completo 
+                              : selectedSolicitante.razao_social}
+                          </span>
+                          <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${
+                            selectedSolicitante.tipo === 'pessoa_fisica'
+                              ? 'bg-blue-100 text-blue-700'
+                              : 'bg-green-100 text-green-700'
+                          }`}>
+                            {selectedSolicitante.tipo === 'pessoa_fisica' ? 'Pessoa Física' : 'Pessoa Jurídica'}
+                          </span>
+                        </div>
+                        <div className="flex items-center space-x-4 text-xs text-gray-500 mt-1">
+                          {selectedSolicitante.email && (
+                            <span className="flex items-center space-x-1">
+                              <Mail className="w-3 h-3" />
+                              <span>{selectedSolicitante.email}</span>
+                            </span>
+                          )}
+                          {selectedSolicitante.telefone && (
+                            <span className="flex items-center space-x-1">
+                              <Phone className="w-3 h-3" />
+                              <span>{selectedSolicitante.telefone}</span>
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  {errors.requester_name && (
-                    <p className="mt-1 text-sm text-red-600">{errors.requester_name.message}</p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-[#404040] mb-2">
-                    Email
-                  </label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <input
-                      type="email"
-                      {...register('requester_email', {
-                        pattern: {
-                          value: /^\S+@\S+$/i,
-                          message: 'Email inválido'
-                        }
-                      })}
-                      className={`w-full pl-11 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#FF6B35] focus:border-transparent ${
-                        errors.requester_email ? 'border-red-500' : 'border-gray-300'
-                      }`}
-                      placeholder="email@exemplo.com"
-                    />
-                  </div>
-                  {errors.requester_email && (
-                    <p className="mt-1 text-sm text-red-600">{errors.requester_email.message}</p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-[#404040] mb-2">
-                    Telefone
-                  </label>
-                  <div className="relative">
-                    <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <input
-                      type="tel"
-                      {...register('requester_phone')}
-                      className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6B35] focus:border-transparent"
-                      placeholder="(11) 99999-9999"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-[#404040] mb-2">
-                    CPF
-                  </label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <input
-                      type="text"
-                      {...register('requester_cpf')}
-                      className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6B35] focus:border-transparent"
-                      placeholder="000.000.000-00"
-                    />
-                  </div>
-                </div>
+                )}
               </div>
             </div>
 
