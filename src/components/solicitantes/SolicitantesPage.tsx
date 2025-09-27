@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Search, Users, Building, Edit, Trash2, Eye, User, Mail, Phone, FileText, AlertTriangle } from 'lucide-react';
+import { Plus, Search, Users, Building, CreditCard as Edit, Trash2, Eye, User, Mail, Phone, FileText, AlertTriangle } from 'lucide-react';
 import { apiService } from '../../services/api';
 import toast from 'react-hot-toast';
 import CreateSolicitanteModal from './CreateSolicitanteModal';

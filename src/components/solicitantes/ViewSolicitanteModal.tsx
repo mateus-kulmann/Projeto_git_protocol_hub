@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, User, Building, Mail, Phone, MapPin, Users, Edit, FileText, Calendar } from 'lucide-react';
+import { X, User, Building, Mail, Phone, MapPin, Users, CreditCard as Edit, FileText, Calendar } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
